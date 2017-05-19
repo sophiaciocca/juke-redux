@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { hashHistory } from 'react-router';
+import { hashHistory, browserHistory } from 'react-router';
 
 import initialState from '../initialState';
 import AUDIO from '../audio';
@@ -138,7 +138,7 @@ export default class AppContainer extends Component {
         this.setState({
           playlists: [...this.state.playlists, playlist]
         }, () => {
-          hashHistory.push(`/playlists/${playlist.id}`)
+         browserHistory.push(`/playlists/${playlist.id}`)
         });
       });
   }
@@ -184,7 +184,7 @@ export default class AppContainer extends Component {
   }
 
   render () {
-
+    console.log("appcontainer")
     const props = Object.assign({}, this.state, {
       toggleOne: this.toggleOne,
       toggle: this.toggle,
