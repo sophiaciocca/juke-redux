@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import store from '../store';
-import {setLyrics} from '../action-creators/lyrics.js';
+import { setLyrics } from '../action-creators/lyrics.js';
 import axios from 'axios';
 import Lyrics from '../components/Lyrics';
 
@@ -29,27 +29,16 @@ export default class LyricsContainer extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state);
-         axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
-        .then(response => {
-            console.log(response, 'response')
-          const setLyricsAction = setLyrics(response.data.lyric);
-          store.dispatch(setLyricsAction);           
-        })
-
+        if (this.state.artistQuery && this.state.songQuery) {
+            store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery));
+        }
     }
 
-  
-
-
     componentDidMount() {
-        //subscribe to store
-
-        //call set state with store's state when store updates
 
         this.unsubscribe = store.subscribe(() => {
-      this.setState(store.getState());
-    });
+            this.setState(store.getState());
+        });
     }
     componentWillUnmount() {
         this.unsubscribe();
@@ -58,15 +47,17 @@ export default class LyricsContainer extends Component {
 
     render() {
         console.log("RENEDERRING")
-        return 
-            <Lyrics
-                text={this.state.text}
-                setArtist={this.handleArtistInput}
-                setSong={this.handleSongInput}
-                artistQuery={this.state.artistQuery}
-                songQuery={this.state.songQuery}
-                handleSubmit={this.handleSubmit} />)
-        
+        return (
+            <div>
+                <Lyrics
+                    text={this.state.text}
+                    setArtist={this.handleArtistInput}
+                    setSong={this.handleSongInput}
+                    artistQuery={this.state.artistQuery}
+                    songQuery={this.state.songQuery}
+                    handleSubmit={this.handleSubmit} />
+            </div>
+        )
     }
 
 
@@ -74,4 +65,3 @@ export default class LyricsContainer extends Component {
 
 
 }
-
